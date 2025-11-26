@@ -1,5 +1,8 @@
- "version": "2.0.0",
- "main": "index.html",
+ {
+  "name": "happy-info-tool",
+  "version": "2.0.0",
+  "description": "OSINT Tool for Phone and Aadhaar lookup",
+  "main": "index.html",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -14,7 +17,16 @@
   "devDependencies": {
     "eslint": "8.51.0",
     "eslint-config-next": "13.5.6"
-    "engines": {
+  },
+  "keywords": [
+    "osint",
+    "phone-lookup",
+    "aadhaar",
+    "information-tool"
+  ],
+  "author": "Happy",
+  "license": "MIT",
+  "engines": {
     "node": ">=18.0.0"
   }
 }
