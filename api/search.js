@@ -1,6 +1,22 @@
-// pages/api/search.js (Next.js) or server.js (Node.js)
-
 export default async function handler(req, res) {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Handle OPTIONS request
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  // Only allow GET
+  if (req.method !== 'GET') {
+    return res.status(405).json({
+      success: false,
+      message: 'Method not allowed'
+    });
+  }
+
   const { number, aadhaar } = req.query;
 
   if (!number && !aadhaar) {
@@ -13,22 +29,22 @@ export default async function handler(req, res) {
   try {
     let apiUrl;
     
-    // Determine which parameter to use
     if (number) {
       apiUrl = `https://happy-family-api.vercel.app/api/aggregate?number=${number}`;
-    } else if (aadhaar) {
+    } else {
       apiUrl = `https://happy-family-api.vercel.app/api/aggregate?aadhaar=${aadhaar}`;
     }
+    
+    console.log('Calling:', apiUrl);
     
     const response = await fetch(apiUrl);
     
     if (!response.ok) {
-      throw new Error(`API responded with status: ${response.status}`);
+      throw new Error(`API error: ${response.status}`);
     }
     
     const data = await response.json();
     
-    // Return the data in expected format
     return res.status(200).json({
       success: true,
       fetched: data,
@@ -37,7 +53,7 @@ export default async function handler(req, res) {
     });
 
   } catch (err) {
-    console.error('API Error:', err);
+    console.error('Error:', err);
     return res.status(500).json({
       success: false,
       message: "Server error",
